@@ -3,6 +3,10 @@ import matplotlib.pyplot as plt
 import seaborn as sns
 from sklearn.model_selection import train_test_split
 from sklearn.linear_model import LinearRegression
+from sklearn.metrics import mean_squared_error, mean_absolute_error
+import math
+import pylab
+import scipy.stats as stats
 
 
 
@@ -13,7 +17,7 @@ pd.set_option('display.max_colwidth', None)
 
 
 df = pd.read_csv('ecommerce.csv')
-# print(df.head())
+print(df.head())
 print(df.info())
 print(df.describe())
 
@@ -37,7 +41,7 @@ sns.lmplot(x= "Length of Membership",
 X = df[['Avg. Session Length', 'Time on App', 'Time on Website','Length of Membership',]]
 y = df['Yearly Amount Spent']
 
-X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2, random_state=42)
+X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.3, random_state=42)
 # print(X_train)
 
 # Training the model
@@ -52,7 +56,22 @@ print(cdf)
 predictions = lm.predict(X_test)
 print(predictions)
 
-sns.scatterplot(predictions, y_test)
+sns.scatterplot(x= predictions, y= y_test)
 plt.xlabel('Predictions')
 plt.title('Evaluation of Linear Regression Model')
 plt.show()
+
+print('Mean Absolute Error: ', mean_absolute_error(y_test, predictions))
+print('Mean Squared Error: ', mean_squared_error(y_test, predictions))
+print('RMSE: ', math.sqrt(mean_squared_error(y_test, predictions)))
+
+
+# Residuals
+residuals = y_test - predictions
+
+sns.displot(residuals, bins = 30, kde =True)
+plt.show()
+
+
+stats.probplot(residuals, dist='norm', plot=pylab)
+pylab.show()

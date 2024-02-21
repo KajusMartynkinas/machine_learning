@@ -23,3 +23,9 @@ plt.show()
 
 sns.pairplot(df, kind = 'scatter', plot_kws={'alpha': 0.4})
 plt.show()
+
+sns.lmplot(x= "Length of Membership",
+           y = 'Yearly Amount Spent',
+           data = df,
+           scatter_kws={'alpha':0.3})
+plt.show()

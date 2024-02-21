@@ -1,6 +1,9 @@
 import pandas as pd
 import matplotlib.pyplot as plt
 import seaborn as sns
+from sklearn.model_selection import train_test_split
+from sklearn.linear_model import LinearRegression
+
 
 
 pd.set_option('display.max_rows', None)
@@ -16,16 +19,40 @@ print(df.describe())
 
 # EDA
 sns.jointplot(x='Time on Website', y='Yearly Amount Spent', data=df, alpha=0.5)
-plt.show()
+# plt.show()
 
 sns.jointplot(x='Time on App', y='Yearly Amount Spent', data=df, alpha=0.5)
-plt.show()
+# plt.show()
 
 sns.pairplot(df, kind = 'scatter', plot_kws={'alpha': 0.4})
-plt.show()
+# plt.show()
 
 sns.lmplot(x= "Length of Membership",
            y = 'Yearly Amount Spent',
            data = df,
            scatter_kws={'alpha':0.3})
+# plt.show()
+
+
+X = df[['Avg. Session Length', 'Time on App', 'Time on Website','Length of Membership',]]
+y = df['Yearly Amount Spent']
+
+X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2, random_state=42)
+# print(X_train)
+
+# Training the model
+lm = LinearRegression()
+lm.fit(X_train, y_train)
+# print(lm.coef_)
+cdf = pd.DataFrame(lm.coef_, X.columns, columns=['Coef'])
+print(cdf)
+
+
+# Predictions
+predictions = lm.predict(X_test)
+print(predictions)
+
+sns.scatterplot(predictions, y_test)
+plt.xlabel('Predictions')
+plt.title('Evaluation of Linear Regression Model')
 plt.show()

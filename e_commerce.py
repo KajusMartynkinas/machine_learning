@@ -22,7 +22,7 @@ print(df.info())
 print(df.describe())
 
 # EDA
-sns.jointplot(x='Time on Website', y='Yearly Amount Spent', data=df, alpha=0.5)
+# sns.jointplot(x='Time on Website', y='Yearly Amount Spent', data=df, alpha=0.5)
 # plt.show()
 
 sns.jointplot(x='Time on App', y='Yearly Amount Spent', data=df, alpha=0.5)
@@ -55,11 +55,6 @@ print(cdf)
 # Predictions
 predictions = lm.predict(X_test)
 print(predictions)
-
-sns.scatterplot(x= predictions, y= y_test)
-plt.xlabel('Predictions')
-plt.title('Evaluation of Linear Regression Model')
-plt.show()
 
 print('Mean Absolute Error: ', mean_absolute_error(y_test, predictions))
 print('Mean Squared Error: ', mean_squared_error(y_test, predictions))
